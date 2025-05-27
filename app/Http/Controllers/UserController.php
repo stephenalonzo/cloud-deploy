@@ -52,9 +52,17 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $user = User::find(1);
+
+        if ($request->hasFile('avatar')) {
+            $formFields['avatar'] = $request->file('avatar')->store('avatars', 'public');
+        }
+
+        $user->update($formFields);
+
+        return redirect('/');
     }
 
     /**
