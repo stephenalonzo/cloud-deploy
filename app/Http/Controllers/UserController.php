@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -57,10 +58,13 @@ class UserController extends Controller
         $user = User::find(1);
 
         if ($request->hasFile('avatar')) {
-            $formFields['avatar'] = $request->file('avatar')->store('avatars', 'public');
-        }
+            $path = $request->file('avatar')->store('avatars', 's3');
 
-        $user->update($formFields);
+            $user->update([
+                'avatar' => basename($path),
+                'url' => Storage::disk('s3')->url($path)
+            ]);
+        }
 
         return redirect('/');
     }

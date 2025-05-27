@@ -5,5 +5,5 @@
         <button type="submit">Submit</button>
     </form>
     <p>{{ $user->name }}</p>
-    <img src="storage/{{ $user->avatar }}" alt="">
+    <img src="{{ $user->url }}" alt="">
 @endforeach
